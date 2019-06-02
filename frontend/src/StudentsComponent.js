@@ -13,6 +13,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import React, { Component } from 'react'
 import axios from 'axios'
 
+// Material UI theme customization
 const theme = createMuiTheme({
     palette: {
         primary: {
@@ -21,6 +22,7 @@ const theme = createMuiTheme({
     }
 });
 
+// Handles the delete/post of students and communicates with the backend/API via Axios.
 class StudentsComponent extends Component {
     constructor(props) {
         super(props);
@@ -38,12 +40,15 @@ class StudentsComponent extends Component {
         }
     }
 
+    // One function to handle the input events for adding a new student (name, email, and address). 
     handleInputChange = name => event => {
-        const state = {student:{}};
+        const state = { student: {} };
         state[name] = event.target.value;
         this.setState(state);
     };
 
+    // Fetches students from the API and sets the response as student state. Catches error if
+    // applicable.
     componentDidMount() {
         axios.get('http://localhost:3000/students')
             .then(response => {
@@ -54,6 +59,7 @@ class StudentsComponent extends Component {
             });
     }
 
+    // When the form is submitted, addStudent sends a POST request with axios' config.
     addStudent = event => {
         event.preventDefault();
         const editUser = {
@@ -67,14 +73,16 @@ class StudentsComponent extends Component {
                 }
             }
         };
-    
+
+        // Axios' config.
         const axiosConfig = {
             headers: {
-              'Content-Type': 'application/json;charset=UTF-8',
-              'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*'
             }
-          };
-      
+        };
+
+        // Axios POST request with student to be added and config options.
         axios.post('http://localhost:3000/students/', editUser, axiosConfig)
             .then(response => {
                 const studentList = this.state.students.concat(response.data); //concat current state with new response
@@ -84,6 +92,7 @@ class StudentsComponent extends Component {
             });
     };
 
+    // Deletes student and sends a DELETE request to API.
     deleteStudent = (studentId, i) => {
         axios.delete('http://localhost:3000/students/' + studentId)
             .catch((error) => {

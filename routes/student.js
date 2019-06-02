@@ -1,6 +1,5 @@
 dotify = require('node-dotify');
 
-//curl will be: curl -X GET “localhost:3000/students?name=Charlie+Carham” | jq
 get = (req, res, next) => {
     var query;
     if (req.query.name) {
